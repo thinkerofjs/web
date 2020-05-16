@@ -24,11 +24,11 @@
             <Col span="20" class="bookListCon">
                 <div class="bookList">
                     <li v-for="book_top in uniBooks_top" >
-                        <div class="bookItem" to="/book_info?noverId={{book_top.novelId}}" @click="tss">
+                        <div class="bookItem" to="/book_info?novelId={{book_top.novelId}}" @click="tss">
                             <img src="@/assets/book.jpg" alt="">
                             <div class="bookInfo">
-                                <p class="bookTitle">黑黑夜黑夜黑夜黑夜黑夜夜</p>
-                                <p class="bookAuthor">炭白</p>
+                                <p class="bookTitle">{{book_top.content.novelName}}</p>
+                                <p class="bookAuthor">{{book_top.author.pseudonym}}</p>
                                 <p class="bookTag">
                                     <span @click.stop="ts">
                                         <svg class="icon" aria-hidden="true">
