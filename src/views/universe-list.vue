@@ -24,7 +24,7 @@
             <Col span="20" class="bookListCon">
                 <div class="bookList">
                     <li v-for="book_top in uniBooks_top" >
-                        <div class="bookItem" to="/book_info?novelId={{book_top.novelId}}" @click="tss">
+                        <div class="bookItem" to="/book_info?novelId={{book_top.novelId}}">
                             <img src="@/assets/book.jpg" alt="">
                             <div class="bookInfo">
                                 <p class="bookTitle">{{book_top.content.novelName}}</p>
@@ -63,7 +63,7 @@ export default {
             value13: '',
             select1: 'http',
             select2: 'com',
-            select3: 'day'
+            select3: 'day',
             univId: 1,
             uniBooks_top:[]
         }
@@ -78,8 +78,8 @@ export default {
     methods:{
         ts: function(){
             console.log(12);
-        },l
-        tss: function(noveId){
+        },
+        tss: function(){
             console.log(434);
         }
     },
@@ -106,10 +106,10 @@ export default {
 
 
         this.$api.get('api/main/pub/novel/universe/this.univId', {
-            direction: DESC,
+            direction: 'DESC',
             pageNumber: 1,
             pageSize: 20,
-            properties: ,
+            properties: null,
             sorted: true,
             unsorted: false,
             universeId: this.univId

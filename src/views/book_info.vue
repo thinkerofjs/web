@@ -3,7 +3,7 @@
     <Row class="bookInfoLayout" type="flex" justify="center" align="bottom">
         <Col span="10">
           <div class="bookText">
-            <div class="bookTitle"><p>{{resData.novelName}}<span class="bookStatus">{{if(resData.isComplete==true){完结}else{连载中}  }}</span></p></div>
+              <div class="bookTitle"><p>{{resData.novelName}}<span class="bookStatus"><div v-if="resData.isComplete">完结</div><div v-if="!(resData.isComplete)">连载</div></span></p></div>
             <p class="bookAuthor">{{resData.author.pseudonym}}</p>
             <p class="bookIntroduction">{{resData.summary}}</p>
             <div class="bookLine">
@@ -62,7 +62,7 @@ export default {
   name: 'book-info',
   data () {
       return {
-          novelId : 0;
+          novelId : 0,
           resData : '',
       }
   },
