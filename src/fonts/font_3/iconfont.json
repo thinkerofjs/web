@@ -1,0 +1,58 @@
+{
+  "id": "1809770",
+  "name": "大说",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "3764454",
+      "name": "右箭头",
+      "font_class": "jiantou",
+      "unicode": "e601",
+      "unicode_decimal": 58881
+    },
+    {
+      "icon_id": "1672926",
+      "name": "红包",
+      "font_class": "hongbao",
+      "unicode": "e697",
+      "unicode_decimal": 59031
+    },
+    {
+      "icon_id": "7965904",
+      "name": "历史",
+      "font_class": "lishi",
+      "unicode": "e757",
+      "unicode_decimal": 59223
+    },
+    {
+      "icon_id": "11435298",
+      "name": "设 置",
+      "font_class": "shezhi",
+      "unicode": "e603",
+      "unicode_decimal": 58883
+    },
+    {
+      "icon_id": "11748610",
+      "name": "退出",
+      "font_class": "tuichu",
+      "unicode": "e66b",
+      "unicode_decimal": 58987
+    },
+    {
+      "icon_id": "13387737",
+      "name": "飞机",
+      "font_class": "feiji",
+      "unicode": "e600",
+      "unicode_decimal": 58880
+    },
+    {
+      "icon_id": "13788696",
+      "name": "心",
+      "font_class": "xin",
+      "unicode": "e6d8",
+      "unicode_decimal": 59096
+    }
+  ]
+}
