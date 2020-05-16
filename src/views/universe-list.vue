@@ -23,8 +23,8 @@
         <Row type="flex" justify="center">
             <Col span="20" class="bookListCon">
                 <div class="bookList">
-                    <li v-for="book_top in uniBooks_top" >
-                        <div class="bookItem" to="/book_info?novelId={{book_top.novelId}}">
+                    <div v-for="book_top in uniBooks_top">
+                        <div class="bookItem" to="/book_info?novelId=book_top.novelId">
                             <img src="@/assets/book.jpg" alt="">
                             <div class="bookInfo">
                                 <p class="bookTitle">{{book_top.content.novelName}}</p>
@@ -45,7 +45,7 @@
                                 </p>
                             </div>
                         </div>
-                    </li>
+                    </div>
                 </div>
             </Col>
         </Row>
