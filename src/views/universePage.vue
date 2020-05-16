@@ -24,6 +24,7 @@
             </svg>
         </div>
     </div>
+
 </template>
 
 <script>

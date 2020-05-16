@@ -78,8 +78,8 @@ export default {
     methods:{
         ts: function(){
             console.log(12);
-        },
-        tss: function(noverId){
+        },l
+        tss: function(noveId){
             console.log(434);
         }
     },
@@ -103,6 +103,7 @@ export default {
 
             eee2.preventDefault(); //阻止浏览器的默认滚动
         }
+
 
         this.$api.get('api/main/pub/novel/universe/this.univId', {
             direction: DESC,

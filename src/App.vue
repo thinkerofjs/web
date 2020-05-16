@@ -16,6 +16,7 @@
   </div>
 </template>
 
+
 <script>
   import {Row, Col} from 'view-design'
   export default {
