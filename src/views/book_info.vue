@@ -3,9 +3,9 @@
     <Row class="bookInfoLayout" type="flex" justify="center" align="bottom">
         <Col span="10">
           <div class="bookText">
-            <div class="bookTitle"><p>一人悲伤的老豆老豆<span class="bookStatus">连载中</span></p></div>
-            <p class="bookAuthor">作者</p>
-            <p class="bookIntroduction">一人悲伤的老豆一人悲伤的老豆一人悲伤的老豆一人悲伤的老豆一人悲伤的一人悲伤的老豆一人悲伤的老豆一人悲伤的老豆一人悲伤的老豆一人悲伤的老豆一人悲伤的老豆一人悲伤的老豆一人悲伤的老豆老豆一人悲伤的老豆一人悲伤的老豆一人悲伤的老豆</p>
+            <div class="bookTitle"><p>{{resData.novelName}}<span class="bookStatus">没状态</span></p></div>
+            <p class="bookAuthor">{{resData.author.pseudonym}}</p>
+            <p class="bookIntroduction">{{resData.summary}}</p>
             <div class="bookLine">
 <!--              <router-link class="bookMenu" to="/BookCataLogue">-->
                 <svg class="icon" aria-hidden="true">
@@ -59,12 +59,48 @@ import {Row, Col} from 'view-design'
 
 export default {
   name: 'book-info',
+  data () {
+      return {
+          novelId : 0;
+          resData : '',
+      }
+  },
   components: {
       Row,
       Col
   },
+  created(){
+      this.novelId = document.getElementById("novelId");
+  },
   mounted(){
-    console.log(this.$store.state.count)
+      console.log(this.$store.state.count)
+
+      //在用户看到界面之前执行
+      var a = document.getElementById("tablebox");
+      var scroll_width = 100; //滚动一下的距离
+      if(document.addEventListener){
+          document.addEventListener('DOMMouseScroll', mousewheel_event, false); // FF
+      }
+      a.onmousewheel = mousewheel_event; // IE/Opera/Chrome
+      function mousewheel_event(eee) {
+          var eee2 = eee || window.event, v;
+          eee2.wheelDelta ? v=eee2.wheelDelta : v=eee2.detail;
+          if(v>3||-v>3) v=-v;
+          v>0 ? a.scrollLeft+=scroll_width : a.scrollLeft-=scroll_width;
+
+          eee2.preventDefault(); //阻止浏览器的默认滚动
+      }
+
+      this.$api.get('api/main/pub/novel/this.novelId', {
+              novelId: this.novelId
+          }, response =>{
+              if (response.status >= 200 && response.status < 300) {
+                  console.log(response.data);
+                  this.resData = response.data.resData;
+              } else {
+                  console.log(response.message);
+              }
+          })
   }
 }
 </script>

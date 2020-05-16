@@ -3,12 +3,12 @@
         <swiper ref="mySwiper" :options="swiperOptions" @slideChangeTransitionEnd="slideChangeTransitionEnd">
             <swiper-slide class="univItem" v-for="(item, index) in swiper1Data" v-bind:key='index'>
                 <div :class="currentIndex == index?'showCon':''">
-                    <p class="univName0">{{item.univName}}</p>
-                    <p class="univDes">{{item.univDes}}</p>
+                    <p class="univName0">{{item.universeName}}</p>
+                    <p class="univDes">{{item.description"}}</p>
                 </div>
                 <div class="univImg">
-                    <router-link to="/universe-list"><img :src="item.univImg" alt=""></router-link>
-                    <p class="univName" :class="currentIndex == index?'hideCon':''">{{item.univName}}</p>
+                    <router-link to="/universe-list?univId={{item.universeId}}"><img :src="item.image" alt=""></router-link>
+                    <p class="univName" :class="currentIndex == index?'hideCon':''">{{item.universeName}}</p>
                 </div>
             </swiper-slide>
         </swiper>
@@ -77,7 +77,9 @@ export default {
             slidesPerView : 5,
             centeredSlides : true,
             allowTouchMove: false
-        }
+        },
+        resCode:0,
+        resMsg:''
       }
     },
     components: {
@@ -92,6 +94,33 @@ export default {
         )
     },
     mounted(){
+         //在用户看到界面之前执行
+             var a = document.getElementById("tablebox");
+             var scroll_width = 100; //滚动一下的距离
+             if(document.addEventListener){
+                 document.addEventListener('DOMMouseScroll', mousewheel_event, false); // FF
+             }
+             a.onmousewheel = mousewheel_event; // IE/Opera/Chrome
+             function mousewheel_event(eee) {
+                 var eee2 = eee || window.event, v;
+                 eee2.wheelDelta ? v=eee2.wheelDelta : v=eee2.detail;
+                 if(v>3||-v>3) v=-v;
+                 v>0 ? a.scrollLeft+=scroll_width : a.scrollLeft-=scroll_width;
+
+                 eee2.preventDefault(); //阻止浏览器的默认滚动
+             }
+
+             this.$api.get('api/main/pub/all', {
+             }, response =>{
+                 if (response.status >= 200 && response.status < 300) {
+                     console.log(response.data);
+                     this.resCode = response.data.resCode;
+                     this.swiper1Data = response.data.resData;
+                     this.resMsg = response.data.resMsg;
+                 } else {
+                     console.log(response.message);
+                 }
+             })
     },
     methods:{
         slideChangeTransitionEnd:function(){
