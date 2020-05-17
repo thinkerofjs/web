@@ -77,22 +77,22 @@ export default {
       console.log(this.$store.state.count)
 
       //在用户看到界面之前执行
-      var a = document.getElementById("tablebox");
-      var scroll_width = 100; //滚动一下的距离
-      if(document.addEventListener){
-          document.addEventListener('DOMMouseScroll', mousewheel_event, false); // FF
-      }
-      a.onmousewheel = mousewheel_event; // IE/Opera/Chrome
-      function mousewheel_event(eee) {
-          var eee2 = eee || window.event, v;
-          eee2.wheelDelta ? v=eee2.wheelDelta : v=eee2.detail;
-          if(v>3||-v>3) v=-v;
-          v>0 ? a.scrollLeft+=scroll_width : a.scrollLeft-=scroll_width;
+      // var a = document.getElementById("tablebox");
+      // var scroll_width = 100; //滚动一下的距离
+      // if(document.addEventListener){
+      //     document.addEventListener('DOMMouseScroll', mousewheel_event, false); // FF
+      // }
+      // a.onmousewheel = mousewheel_event; // IE/Opera/Chrome
+      // function mousewheel_event(eee) {
+      //     var eee2 = eee || window.event, v;
+      //     eee2.wheelDelta ? v=eee2.wheelDelta : v=eee2.detail;
+      //     if(v>3||-v>3) v=-v;
+      //     v>0 ? a.scrollLeft+=scroll_width : a.scrollLeft-=scroll_width;
+      //
+      //     eee2.preventDefault(); //阻止浏览器的默认滚动
+      // }
 
-          eee2.preventDefault(); //阻止浏览器的默认滚动
-      }
-
-      this.$api.get('api/main/pub/novel/this.novelId', {
+      this.$api.get('api/main/pub/novel/'+this.novelId, {
               novelId: this.novelId
           }, response =>{
               if (response.status >= 200 && response.status < 300) {
