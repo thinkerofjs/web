@@ -7,7 +7,7 @@
                     <p class="univDes">{{item.description}}</p>
                 </div>
                 <div class="univImg">
-                    <router-link to="/universe-list?univId=item.universeId"><img :src="item.image" alt=""></router-link>
+                    <router-link :to="{path:'universe-list',query:{univId: item.universeId}}"><img :src="`http://180.76.245.160/data/${item.image}`" alt=""></router-link>
                     <p class="univName" :class="currentIndex == index?'hideCon':''">{{item.universeName}}</p>
                 </div>
             </swiper-slide>
@@ -89,29 +89,15 @@ export default {
     },
     created() {
         console.log("universePage-created");
-        // if(this.swiper1Data.length > 7){
-        //     this.swiperPag.slidesPerView = 7;
-        // }else(
-        //     this.swiperPag.slidesPerView = this.swiper1Data.length
-        // )
+        if(this.swiper1Data.length > 7){
+            this.swiperPag.slidesPerView = 7;
+        }else(
+            this.swiperPag.slidesPerView = this.swiper1Data.length
+        )
     },
     mounted(){
         //在用户看到界面之前执行
         console.log("universePage-mounted");
-        // var a = document.getElementById("tablebox");
-        // var scroll_width = 100; //滚动一下的距离
-        // if(document.addEventListener){
-        //     document.addEventListener('DOMMouseScroll', mousewheel_event, false); // FF
-        // }
-        // a.onmousewheel = mousewheel_event; // IE/Opera/Chrome
-        // function mousewheel_event(eee) {
-        //     var eee2 = eee || window.event, v;
-        //     eee2.wheelDelta ? v=eee2.wheelDelta : v=eee2.detail;
-        //     if(v>3||-v>3) v=-v;
-        //     v>0 ? a.scrollLeft+=scroll_width : a.scrollLeft-=scroll_width;
-        //
-        //     eee2.preventDefault(); //阻止浏览器的默认滚动
-        // }
 
         this.$api.get('api/main/pub/all', {
         }, response =>{

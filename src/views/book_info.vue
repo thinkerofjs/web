@@ -13,7 +13,7 @@
                 </svg>
                 <span>作品目录</span>
 <!--              </router-link>-->
-              <router-link class="bookRead" to="/BookReader">
+              <router-link class="bookRead" to="/book-reader/book-reader?chapterId=1">
                 <span>开始阅读</span>
                 <svg class="icon" aria-hidden="true">
                   <use xlink:href="#icon-fanhui"></use>
@@ -71,7 +71,7 @@ export default {
       Col
   },
   created(){
-      this.novelId = document.getElementById("novelId");
+      this.novelId = this.$route.query.novelId;
   },
   mounted(){
       console.log(this.$store.state.count)

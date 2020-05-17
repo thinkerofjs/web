@@ -23,11 +23,11 @@
         <Row type="flex" justify="center">
             <Col span="20" class="bookListCon">
                 <div class="bookList">
-                    <li v-for="book_top in uniBooks_top" v-bind:key="book_top">
-                        <div class="bookItem" to="/book_info?novelId=book_top.novelId">
+                    <li v-for="book_top in this.uniBooks_top.content" v-bind:key='book_top'>
+                        <router-link class="bookItem" :to="{path:'/book_info',query:{novelId: book_top.novelId}}">
                             <img src="@/assets/book.jpg" alt="">
                             <div class="bookInfo">
-                                <p class="bookTitle">{{book_top.content.novelName}}</p>
+                                <p class="bookTitle">{{book_top.novelName}}</p>
                                 <p class="bookAuthor">{{book_top.author.pseudonym}}</p>
                                 <p class="bookTag">
                                     <span @click.stop="ts">
@@ -44,7 +44,7 @@
                                     </span>
                                 </p>
                             </div>
-                        </div>
+                        </router-link>
                     </li>
                 </div>
             </Col>
@@ -84,28 +84,10 @@ export default {
         }
     },
     created(){
-        this.univId = document.getElementById("univId")
+        this.univId = this.$route.query.univId
     },
     mounted() {
-
-        //在用户看到界面之前执行
-        var a = document.getElementById("tablebox");
-        var scroll_width = 100; //滚动一下的距离
-        if(document.addEventListener){
-            document.addEventListener('DOMMouseScroll', mousewheel_event, false); // FF
-        }
-        a.onmousewheel = mousewheel_event; // IE/Opera/Chrome
-        function mousewheel_event(eee) {
-            var eee2 = eee || window.event, v;
-            eee2.wheelDelta ? v=eee2.wheelDelta : v=eee2.detail;
-            if(v>3||-v>3) v=-v;
-            v>0 ? a.scrollLeft+=scroll_width : a.scrollLeft-=scroll_width;
-
-            eee2.preventDefault(); //阻止浏览器的默认滚动
-        }
-
-
-        this.$api.get('api/main/pub/novel/universe/this.univId', {
+        this.$api.get('api/main/pub/novel/universe/'+this.univId, {
             direction: 'DESC',
             pageNumber: 1,
             pageSize: 20,
