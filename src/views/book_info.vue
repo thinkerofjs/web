@@ -3,21 +3,21 @@
     <Row class="bookInfoLayout" type="flex" justify="center" align="bottom">
         <Col span="10">
           <div class="bookText">
-            <div class="bookTitle"><p>一人悲伤的老豆老豆<span class="bookStatus">连载中</span></p></div>
-            <p class="bookAuthor">作者</p>
-            <p class="bookIntroduction">一人悲伤的老豆一人悲伤的老豆一人悲伤的老豆一人悲伤的老豆一人悲伤的一人悲伤的老豆一人悲伤的老豆一人悲伤的老豆一人悲伤的老豆一人悲伤的老豆一人悲伤的老豆一人悲伤的老豆一人悲伤的老豆老豆一人悲伤的老豆一人悲伤的老豆一人悲伤的老豆</p>
+            <div class="bookTitle"><p>{{novelInfo.novelName}}<span class="bookStatus">{{novelInfo.isComplete?status.finish:status.serialized}}</span></p></div>
+            <p class="bookAuthor" v-if="novelInfo.author">{{novelInfo.author.pseudonym}}</p>
+            <p class="bookIntroduction">{{novelInfo.summary}}</p>
             <div class="bookLine">
-<!--              <router-link class="bookMenu" to="/BookCataLogue">-->
+              <router-link class="bookMenu" :to="'/BookCataLogue/'+novelInfo.novelId">
                 <svg class="icon" aria-hidden="true">
                   <use xlink:href="#icon-mulu"></use>
                 </svg>
                 <span>作品目录</span>
-<!--              </router-link>-->
-              <router-link class="bookRead" to="/BookReader">
-                <span>开始阅读</span>
-                <svg class="icon" aria-hidden="true">
-                  <use xlink:href="#icon-fanhui"></use>
-                </svg>
+              </router-link>
+              <router-link v-if="firstChapter" class="bookRead" :to="'/BookReader/'+firstChapter">
+                      <span>开始阅读</span>
+                      <svg class="icon" aria-hidden="true">
+                          <use xlink:href="#icon-fanhui"></use>
+                      </svg>
               </router-link>
             </div>
             <div class="bookOther">
@@ -31,9 +31,7 @@
           </div>
         </Col>
         <Col span="6">
-          <router-link class="bookRead" to="/BookReader">
-            <img class="bookImg" src="@/assets/book.jpg" />
-          </router-link>
+            <img class="bookImg" :src="prefix+novelInfo.cover"/>
         </Col>
         <Col span="8">
             <div class="scorePeople">
@@ -63,8 +61,33 @@ export default {
       Row,
       Col
   },
-  mounted(){
-    console.log(this.$store.state.count)
+  data() {
+      const status = {serialized: "连载", finish: "完结"}
+     return{
+       status:status,
+       // 小说信息
+       novelInfo:{},
+       // 第一章
+         firstChapter: null,
+         // 图片前缀
+         prefix: "/data/"
+    }},
+    created(){
+      this.fetchData();
+    //console.log(this.$store.state.count)
+  },
+  methods:{
+      fetchData(){
+          let book_id = this.$route.params.id;
+          this.$api.get('/api/main/pub/novel/'+book_id,{},response => {
+              if (response.status >= 200 && response.status < 300) {
+                  this.novelInfo = response.data.resData;
+                  this.firstChapter = this.novelInfo.catalog[0].chapters[0].chapterId;
+              } else {
+                  console.log(response.message);
+              }
+          })
+      }
   }
 }
 </script>

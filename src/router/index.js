@@ -37,17 +37,17 @@ export default new Router({
 
         },
         {
-            path: '/BookReader',
+            path: '/BookReader/:id',
             name: 'BookReader',
             component: BookReader
         },
         {
-            path: '/BookCataLogue',
+            path: '/BookCataLogue/:id',
             name: 'BookCataLogue',
             component: BookCataLogue
         },
         {
-            path: '/book_info',
+            path: '/book_info/:id',
             name: 'book_info',
             component: book_info
         },
