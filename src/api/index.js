@@ -4,7 +4,7 @@ var http = axios.create({
   baseURL: '/',
   withCredentials: true,
   headers: {
-    'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
+	'Content-Type': 'application/json'
   },
   transformRequest: [function (data) {
     let newData = '';
@@ -23,7 +23,7 @@ function apiAxios(method, url, params, response) {
     method: method,
     url: url,
     data: method === 'POST' || method === 'PUT' ? params : null,
-    params: method === 'GET' || method === 'DELETE' ? params : null,
+    params: method === 'POST' || method === 'GET' || method === 'DELETE' ? params : null,
   }).then(function (res) {
     response(res);
   }).catch(function (err) {
@@ -43,5 +43,8 @@ export default {
   },
   delete: function (url, params, response) {
     return apiAxios('DELETE', url, params, response)
+  },
+  originPost:function(...param){
+    return axios.post(...param)
   }
 }

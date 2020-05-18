@@ -6,17 +6,17 @@
 					<img src="https://cube.elemecdn.com/e/fd/0fc7d20532fdaf769a25683617711png.png"/>
 				</el-avatar>
 			</div>
-			
+
 			<p class="title-p2 padding-tb-10">{{anthor.pseudonym}}</p>
 			<p class="text-color-8 padding-tb-10" >作者</p>
 		</div>
-		<div class="text-left" style="margin-top: 30px;">
-			<p class="text-color-10 margin-b20 hover"  style="color: #8F97A2;"><i class="iconfont iconshuji margin-r10"></i>作品</p>
-			<p class="text-color-10 hover" style="color: #8F97A2;"><i class="iconfont iconshoucang margin-r10"></i>收藏</p>
-		</div>
+		<!-- <div class="text-left" style="margin-top: 30px;">
+			<p class="text-color-10 margin-b20 hover"  style="color: #8F97A2;" @click="goZuopin"><i class="iconfont iconshuji margin-r10"></i>作品</p>
+			<p class="text-color-10 hover" style="color: #8F97A2;" @click="goFav"><i class="iconfont iconshoucang margin-r10"></i>收藏</p>
+		</div> -->
 		<div class="absolute" style="bottom:30px">
-			<p class="text-color-10 margin-b20 hover"  style="color: #8F97A2;"><i class="iconfont iconshezhi margin-r10"></i>设置</p>
-			<p class="text-color-10 hover"  style="color: #8F97A2;"><i class="iconfont iconicon4 margin-r10"></i>退出</p>
+			<!-- <p class="text-color-10 margin-b20 hover"  style="color: #8F97A2;" @click="goSet"><i class="iconfont iconshezhi margin-r10"></i>设置</p> -->
+			<p class="text-color-10 hover"  style="color: #8F97A2;"><i class="iconfont iconicon4 margin-r10" @click="goIndex"></i>退出</p>
 		</div>
 	</el-aside>
 </template>
@@ -45,11 +45,11 @@
     },
     created:function () {
 		this.getDetail()
-		console.log(this.$store.state.login)
+		// console.log(this.$store.state.login)
     },
     mounted:function(){
 		this.$store.commit('changeNav', 0)
-		
+
     },
 	methods: {
 		errorHandler() {
@@ -65,18 +65,29 @@
 					this.anthor=res.data.resData;
 				}else{
 					this.$message({
-					          showClose: true,
-					          message: res.data.resMsg,
-					          type:'error'
-					        })
+						showClose: true,
+						message: res.data.resMsg,
+						type:'error'
+					})
 				}
 			})
 		},
 		goPerson(){
-			console.log(111)
-			this.$router.push('/book_manage/personone')
+			this.$router.push('/book_manage/book_list')
+		},
+		goZuopin(){
+
+		},
+		goFav(){
+			this.$router.push('/book_manage/book_favorite')
+		},
+		goSet(){
+
+		},
+		goIndex(){
+			this.$router.push('/')
 		}
-			
+
 	}
   };
 </script>
