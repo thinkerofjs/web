@@ -68,7 +68,7 @@
             <div class="h60">&ensp;</div>
             <div class="write-image-top fix">
               <img src="@/assets/book.jpg">
-              <h1>球状闪电</h1>
+              <h1>她与她在最不能不能说的故事</h1>
               <br>
               <ul>
                 <li><span class="icon iconfont f14 vm">&#xe6c3;</span><span class="f12">{{Infomation_Collection}}</span></li>

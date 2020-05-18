@@ -23,7 +23,6 @@
         <Row type="flex" justify="center">
             <Col span="20" class="bookListCon">
                 <div class="bookList">
-
                     <div class="bookItem" @click="tss">
                         <img src="@/assets/book.jpg" alt="">
                         <div class="bookInfo">
@@ -376,6 +375,31 @@
                         </div>
                     </div>
 
+=======
+                    <li v-for="book_top in this.uniBooks_top.content" v-bind:key='book_top'>
+                        <router-link class="bookItem" :to="{path:'/book_info',query:{novelId: book_top.novelId}}">
+                            <img src="@/assets/book.jpg" alt="">
+                            <div class="bookInfo">
+                                <p class="bookTitle">{{book_top.novelName}}</p>
+                                <p class="bookAuthor">{{book_top.author.pseudonym}}</p>
+                                <p class="bookTag">
+                                    <span @click.stop="ts">
+                                        <svg class="icon" aria-hidden="true">
+                                            <use xlink:href="#icon-mulu"></use>
+                                          </svg>
+                                          2134
+                                    </span>
+                                    <span>
+                                        <svg class="icon" aria-hidden="true">
+                                            <use xlink:href="#icon-mulu"></use>
+                                          </svg>
+                                          4354
+                                    </span>
+                                </p>
+                            </div>
+                        </router-link>
+                    </li>
+>>>>>>> cb849d5b9dd425876b78fc9652fa4a67f904b364
                 </div>
             </Col>
         </Row>
@@ -393,7 +417,10 @@ export default {
             value13: '',
             select1: 'http',
             select2: 'com',
-            select3: 'day'
+
+            select3: 'day',
+            univId: 1,
+            uniBooks_top:[]
         }
     },
     components: {
@@ -410,8 +437,29 @@ export default {
         tss: function(){
             console.log(434);
         }
+    },
+    created(){
+        this.univId = this.$route.query.univId
+    },
+    mounted() {
+        this.$api.get('api/main/pub/novel/universe/'+this.univId, {
+            direction: 'DESC',
+            pageNumber: 1,
+            pageSize: 20,
+            properties: null,
+            sorted: true,
+            unsorted: false,
+            universeId: this.univId
+        }, response =>{
+            if (response.status >= 200 && response.status < 300) {
+                console.log(response.data);
+                this.uniBooks_top = response.data.resData;
+            } else {
+                console.log(response.message);
+            }
+        })
     }
-} 
+}
 </script>
 
 <style>

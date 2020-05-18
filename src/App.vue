@@ -5,22 +5,23 @@
         <Row type="flex" justify="center" class="top">
           <Col span="3"><router-link to="/" class="font">大说</router-link></Col>
           <Col span="3"><router-link to="/universePage" class="font">宇宙</router-link></Col>
-          <Col span="3" v-if ="Author_comp !=true"><router-link to="/applyAuthor"><el-button type="primary" style="font-size: 18px">成为作者</el-button></router-link></Col>
+          <Col span="3" v-if ="isAuthor !=true"><el-button type="primary" style="font-size: 18px">成为作者</el-button></Col>
         </Row>
       </Col>
       <Col span="4" v-if = "login_comp === false"><router-link to="/loadpage" class="load"><el-button type="primary">登录/注册</el-button></router-link></Col>
-      <Col span="4" v-if ="login_comp === true">QAQ欢迎你~{{UserName}}<el-button type="danger" @click="log_off">退出登录</el-button></Col>
+      <Col span="4" v-if ="login_comp === true"><el-button type="danger" @click="log_off">退出登录</el-button></Col>
+      <h1 v-if ="login_comp ===true">QAQ欢迎你~{{username}}</h1>
     </Row>
     <router-view></router-view>
   </div>
 </template>
-
 <script>
   import {Row, Col} from 'view-design'
   export default {
     data(){
       return{
-
+        login:false,
+        isAuthor:false,
       }
     },
     name: 'App',
@@ -61,15 +62,12 @@
       nav(){
         return this.$store.state.nav;
       },
-      UserName(){
+      username(){
         return this.$store.state.username;
       },
       // eslint-disable-next-line vue/no-dupe-keys
       login_comp(){
         return this.$store.state.login;
-      },
-      Author_comp(){
-        return this.$store.state.isAuthor;
       },
     },
     mounted() {
@@ -92,19 +90,17 @@
         }
       })
           .then(res=>{
-            this.UserName = res.data.username
-            this.login_comp = res.data.isFrozen
-            this.Author_comp = res.data.isAuthor
-            this.$store.commit('getUserName',res.data.username)
-            this.$store.commit('changeinfoLogin', true)
-            this.$router.push({ name: 'Home' })
+            this.login = true
+            console.log('初始加载用户信息')
+            console.log(res.data)
           })
           .catch(Error=>{
-            // this.isAuthor = false
-            // this.login = false
+            this.isAuthor = false
+            this.login = false
+            console.log('如果是401，表示用户未登录')
             console.log(Error)
           })
-      },
+    }
   }
 </script>
 
