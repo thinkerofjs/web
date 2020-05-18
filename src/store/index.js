@@ -10,7 +10,6 @@ export default new Vuex.Store({
       login: false,
       isAuthor: false,
       username:"",
-      pseudonym:""
     },
     mutations: {
       increment (state) {
@@ -30,9 +29,6 @@ export default new Vuex.Store({
       //得到账户名字
       getUserName (state, param) {
         state.username = param
-      },
-      getpseudonym (state,param) {
-        state.pseudonym = param
-      },
+      }
     }
   })

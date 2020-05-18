@@ -14,22 +14,24 @@
     </div>
     <div class="rightContainer">
       <div class="contents">
-        <div v-for="(l,index) in contents" :key="index">
+        <div>
           <!-- 卷 -->
-          <template v-if="l.type=='volume'">
-            <div class="volume">{{l.value}}</div>
+          <!--
+          <template>
+            <div class="volume">{{}}</div>
           </template>
+          -->
           <!-- 章 -->
-          <template v-if="l.type=='chapter'">
-            <div class="chapter">{{l.value}}</div>
+          <template>
+            <div class="chapter">{{resData.chapterId}}</div>
           </template>
           <!-- 标题 -->
-          <template v-if="l.type=='title'">
-            <div class="title">{{l.value}}</div>
+          <template>
+            <div class="title">{{resData.chapterName}}</div>
           </template>
           <!-- 内容 -->
-          <template v-if="l.type=='text'">
-            <div class="text">{{l.value}}</div>
+          <template>
+            <div class="text">{{resData.content}}</div>
           </template>
         </div>
       </div>
@@ -44,13 +46,13 @@
           <button class="autoBtn">
             <img src="/book-reader/下一页.png" alt />
           </button>
-          <button class="prevBtn">
+          <button class="prevBtn" @click="prevBtn()">
             <img src="/book-reader/上一章.png" alt />
           </button>
           <button class="menuBtn">
             <img src="/book-reader/目录.png" alt />
           </button>
-          <button class="nextBtn">
+          <button class="nextBtn" @click="nextBtn()">
             <img src="/book-reader/下一章.png" alt />
           </button>
         </div>
@@ -67,22 +69,93 @@ import mockData from "./mock-data";
 export default {
   name: "book-reader",
   data: () => {
-    return {
-      contents: [],
-      ifShowLeft: true
-    };
+      return {
+          contents: [],
+          ifShowLeft: true,
+          chapterId: 1,
+          chapterName: '',
+          resData:'',
+          novelId: 0,
+          wordNumber: 0,
+          resCode: 0,
+          resMsg: '',
+          content: '',
+      };
   },
   methods: {
-    goIndex() {
-      this.$router.push("/");
-    },
-    triggerLeft() {
-      this.ifShowLeft = !this.ifShowLeft;
-    }
+      goIndex() {
+          this.$router.push("/");
+      },
+      triggerLeft() {
+          this.ifShowLeft = !this.ifShowLeft;
+      },
+      prevBtn(){
+          this.$api.get('this.resData.previousChapter.chapterId', {
+              chapterId: this.resData.previousChapter.chapterId
+          }, response =>{
+              if (response.status >= 200 && response.status < 300) {
+                  console.log(response.data);
+                  this.resCode = response.data.resCode;
+                  this.resMsg = response.data.resMsg;
+                  this.chapterId = response.data.chapterId;
+                  this.chapterName = response.data.chapterName;
+                  this.resData = response.data.resData;
+                  this.novelId = response.data.novelId;
+                  this.wordNumber = response.data.wordNumber;
+                  this.resCode = response.data.resCode;
+                  this.resMsg = response.data.resMsg;
+              } else {
+                  console.log(response.message);
+              }
+          })
+      },
+      nextBtn(){
+          this.$api.get('api/main/pub/novel/content/this.resData.nextChapter.chapterId', {
+              chapterId: this.resData.nextChapter.chapterId
+              }, response =>{
+              if (response.status >= 200 && response.status < 300) {
+                  console.log(response.data);
+                  this.resCode = response.data.resCode;
+                  this.resMsg = response.data.resMsg;
+                  this.chapterId = response.data.chapterId;
+                  this.chapterName = response.data.chapterName;
+                  this.resData = response.data.resData;
+                  this.novelId = response.data.novelId;
+                  this.wordNumber = response.data.wordNumber;
+                  this.resCode = response.data.resCode;
+                  this.resMsg = response.data.resMsg;
+              } else {
+                console.log(response.message);
+              }
+          })
+      },
   },
   mounted() {
-    this.contents = mockData;
-  }
+      this.contents = mockData
+      console.log("universePage-mounted");
+
+      this.$api.get('api/main/pub/novel/content/this.chapterId', {
+          chapterId: this.chapterId
+      }, response =>{
+          if (response.status >= 200 && response.status < 300) {
+              console.log(response.data);
+              this.resCode = response.data.resCode;
+              this.resMsg = response.data.resMsg;
+              this.chapterId = response.data.chapterId;
+              this.chapterName = response.data.chapterName;
+              this.resData = response.data.resData;
+              this.novelId = response.data.novelId;
+              this.wordNumber = response.data.wordNumber;
+              this.resCode = response.data.resCode;
+              this.resMsg = response.data.resMsg;
+           } else {
+                console.log(response.message);
+           }
+      })
+  },
+  created(){
+
+  },
 };
 </script>
 

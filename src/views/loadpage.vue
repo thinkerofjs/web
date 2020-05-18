@@ -164,26 +164,35 @@
           "password": this.password_1,
           "rememberMe": true
         }
-        this.$api.originPost('api/main/pub/login',jsons).then(res=>{
-          if (res.data.resCode !== '0000') {
-            this.$message.error(res.data.resMsg);
-          }else {
-            this.$store.commit('getUserName', this.userName_1)
-            this.$store.commit('changeinfoLogin', true)
-            this.$router.push({ name: 'Home' })
-            this.$message({
-              message: '耶~！，'+res.data.resMsg,
-              type: 'success'
-            });
+//在需要的事件中直接使用
+        this.$axios({
+          url:'api/main/pub/login',
+          method: 'post',
+          data:jsons,
+          header:{
+            'Content-Type':'application/json'  //如果写成contentType会报错
           }
-
-        }).catch(err=>{
-          console.log(err)
-          alert('登录失败哦QAQ')
         })
-      }
+            .then(res=> {
+              if (res.data.resCode !== '0000') {
+                this.$message.error(res.data.resMsg);
+              }else {
+                this.$store.commit('getUserName', this.userName_1)
+                this.$store.commit('changeinfoLogin', true)
+                this.$router.push({ name: 'Home' })
+                this.$message({
+                  message: '耶~！，'+res.data.resMsg,
+                  type: 'success'
+                });
+            }
+              console.log(res.data.resMsg)
+              console.log(res.data.resCode)
 
-
+            })
+            .catch(Error=>{
+              console.log(Error)
+            })
+      },
     }
   }
 </script>

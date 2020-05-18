@@ -3,12 +3,12 @@
         <swiper ref="mySwiper" :options="swiperOptions" @slideChangeTransitionEnd="slideChangeTransitionEnd">
             <swiper-slide class="univItem" v-for="(item, index) in swiper1Data" v-bind:key='index'>
                 <div :class="currentIndex == index?'showCon':''">
-                    <p class="univName0">{{item.univName}}</p>
-                    <p class="univDes">{{item.univDes}}</p>
+                    <p class="univName0">{{item.universeName}}</p>
+                    <p class="univDes">{{item.description}}</p>
                 </div>
                 <div class="univImg">
-                    <router-link to="/universe-list"><img :src="item.univImg" alt=""></router-link>
-                    <p class="univName" :class="currentIndex == index?'hideCon':''">{{item.univName}}</p>
+                    <router-link :to="{path:'universe-list',query:{univId: item.universeId}}"><img :src="`http://180.76.245.160/data/${item.image}`" alt=""></router-link>
+                    <p class="univName" :class="currentIndex == index?'hideCon':''">{{item.universeName}}</p>
                 </div>
             </swiper-slide>
         </swiper>
@@ -27,8 +27,8 @@
 </template>
 
 <script>
-import { Swiper, SwiperSlide } from 'vue-awesome-swiper'
-import 'swiper/css/swiper.css'
+import { Swiper, SwiperSlide } from 'vue-awesome-swiper';
+import 'swiper/css/swiper.css';
 export default {
     data() {
       return {
@@ -36,9 +36,9 @@ export default {
         swiperLen: 3,
         swiper1Data:[
             {
-                univName: '',
-                univDes: '',
-                univImg: ''
+                univName: '魔法宇宙',
+                univDes: '由绝对物理规则构成的宇宙，所有生命体都无法超规则。但同样在一代代超级智者们的不断努力下某些生命体种族开始掌握规则的运转逻辑，他们建造制作各种机械体探索并开发规则的使用。',
+                univImg: require('@/assets/book.jpg')
             },
             {
                 univName: '魔法宇宙',
@@ -77,7 +77,9 @@ export default {
             slidesPerView : 5,
             centeredSlides : true,
             allowTouchMove: false
-        }
+        },
+        resCode:0,
+        resMsg:''
       }
     },
     components: {
@@ -85,6 +87,7 @@ export default {
         SwiperSlide
     },
     created() {
+        console.log("universePage-created");
         if(this.swiper1Data.length > 7){
             this.swiperPag.slidesPerView = 7;
         }else(
@@ -92,6 +95,20 @@ export default {
         )
     },
     mounted(){
+        //在用户看到界面之前执行
+        console.log("universePage-mounted");
+
+        this.$api.get('api/main/pub/all', {
+        }, response =>{
+            if (response.status >= 200 && response.status < 300) {
+                console.log(response.data);
+                this.resCode = response.data.resCode;
+                this.swiper1Data = response.data.resData;
+                this.resMsg = response.data.resMsg;
+            } else {
+                console.log(response.message);
+            }
+        })
     },
     methods:{
         slideChangeTransitionEnd:function(){

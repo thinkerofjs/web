@@ -22,9 +22,6 @@
 				<el-form label-position="left" :model="form" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
 					<div class="overflow ">
 						<div class=" inline-block" style="position: relative;">
-<!--							<el-dialog :visible.sync="dialogVisible">-->
-<!--							  <img width="100%" :src="dialogImageUrl" alt="">-->
-<!--							</el-dialog>-->
 							<el-upload
 								style="position: absolute;z-index: 1;right: 3px;bottom: 10px;"
 								class="upload-demo"
@@ -52,7 +49,6 @@
 
 							</el-image>
 						</div>
-
 						<div class="fr form_r" style="width: 65%;">
 							<el-form-item label="全本订阅" class="text-color-8" style="margin-bottom: 0px;">
 								<el-checkbox class="fr text-color-8" v-model="form.is_dingyue">不允许全本订阅</el-checkbox>
@@ -74,7 +70,6 @@
 							</div>
 							</el-form-item>
 						</div>
-
 					</div>
 					<div class="form_b" style="margin-top: 50px;">
 						<el-form-item label="" class="text-color-8" style="margin-bottom: 0px;">
@@ -101,13 +96,11 @@
 						<span>新章</span>
 					</span>
 				</div>
-
 			</div>
 			<div class="padding-30 juan_list" style="height: 85vh;">
 				<el-aside class="fl" width="40%" style="height: 75vh;overflow: hidden;">
 					<span style="color: #B7B7B7;" class="padding-20">卷引</span>
 					<div class="" style="height: 100%;overflow: auto;margin-right: -17px;margin-top: 10px;">
-
 						<ul class="infinite-list" v-infinite-scroll="load" style="overflow:auto">
 							<li v-for="(item,index) in juan_list" :key="index" class="infinite-list-item">
 								<p class="f16 padding-b10 padding-lr-20 juan-title " :class="{'select-p':index==0}">{{item}}</p>
@@ -121,12 +114,10 @@
 					<div class="padding-t20" style="line-height: 28px;">
 						<span>第一章 前言</span>
 						<el-button class="bg2 fr f12" round size="small" style="border: none;color: #fff;padding: 5px 40px;font-size: 12px;">免费</el-button>
-
 					</div>
 					<div class="padding-t20" style="line-height: 28px;">
 						<span>第一章 前言</span>
 						<el-button class="bg2 fr f12" round size="small" style="border: none;color: #fff;padding: 5px 40px;font-size: 12px;">免费</el-button>
-
 					</div>
 					<div class="padding-t20" style="line-height: 28px;">
 						<span>第一章 前言</span>
@@ -134,7 +125,6 @@
 
 					</div>
 				</el-aside>
-
 			</div>
 		</el-aside>
 	</el-container>
@@ -178,7 +168,6 @@
 		background: #F7F8FC !important;
 		font-family: "iconfont" !important;
 		font-size: 16px;
-
 	}
 	.el-form-item__label,.sel-checkbox__label{
 		color:#B7B7B7 !important;
@@ -235,7 +224,6 @@
 	.is-active{
 		color: #1B1B1B !important;
 	}
-
 </style>
 
 <script>
@@ -335,7 +323,6 @@
 			}
 		},
 		submitForm(){
-
 		},
 		handleRemove(file, fileList) {
 			console.log(file, fileList);
@@ -363,19 +350,18 @@
 				}
 			})
 		},
-		// beforeUpload(file){
-		// 	var testmsg=file.name.substring(file.name.lastIndexOf('.')+1)
-		// 	if(this.file_type.indexOf(testmsg)===-1){
-		// 	  this.$message({
-		// 	            showClose: true,
-		// 	            message: '文件格式不符合要求',
-		// 	            type:'error'
-		// 	          })
-		// 	  this.is_upload=1;
-		// 	  return testmsg;
-		// 	}
-		// }
-
+		beforeUpload(file){
+			var testmsg=file.name.substring(file.name.lastIndexOf('.')+1)
+			if(this.file_type.indexOf(testmsg)===-1){
+				this.$message({
+					showClose: true,
+					message: '文件格式不符合要求',
+					type:'error'
+				})
+				this.is_upload=1;
+				return testmsg;
+			}
+		}
 	}
   };
 </script>
