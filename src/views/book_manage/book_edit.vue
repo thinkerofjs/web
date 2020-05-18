@@ -370,17 +370,8 @@
     },
     mounted:function(){
 		this.$store.commit('changeNav', 0)
-		if(!this.novelId){
-			this.$message({
-				showClose: true,
-				message: '参数错误',
-				type:'error'
-			})
-			return false;
-		}else{
-			this.getDetail();
-			this.getJuan();
-		}
+		this.getDetail();
+		this.getJuan();
     },
 	methods: {
 		handleAvatarSuccess(res, file) {
