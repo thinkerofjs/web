@@ -5,23 +5,27 @@
         <Row type="flex" justify="center" class="top">
           <Col span="3"><router-link to="/" class="font">大说</router-link></Col>
           <Col span="3"><router-link to="/universePage" class="font">宇宙</router-link></Col>
-          <Col span="3" v-if ="isAuthor !=true"><el-button type="primary" style="font-size: 18px">成为作者</el-button></Col>
+          <Col span="3" v-if ="Author_comp !=true"><router-link to="/applyAuthor"><el-button type="primary" style="font-size: 18px">成为作者</el-button></router-link></Col>
+          <Col span="3" v-if ="Author_comp !=true"><router-link to="/book_manage/personone"><el-button type="primary" style="font-size: 18px">作者控制台</el-button></router-link></Col>
         </Row>
       </Col>
       <Col span="4" v-if = "login_comp === false"><router-link to="/loadpage" class="load"><el-button type="primary">登录/注册</el-button></router-link></Col>
-      <Col span="4" v-if ="login_comp === true"><el-button type="danger" @click="log_off">退出登录</el-button></Col>
-      <h1 v-if ="login_comp ===true">QAQ欢迎你~{{username}}</h1>
+      <Col span="4" v-if ="login_comp === true">QAQ欢迎你~{{UserName}}<el-button type="danger" @click="log_off">退出登录</el-button></Col>
     </Row>
-    <router-view></router-view>
+    <router-view  v-if="routerstatus"></router-view>
   </div>
 </template>
 <script>
   import {Row, Col} from 'view-design'
   export default {
+	provide(){
+		return {
+			reload:this.reload
+		}
+	},
     data(){
       return{
-        login:false,
-        isAuthor:false,
+		routerstatus:true,
       }
     },
     name: 'App',
@@ -57,6 +61,12 @@
               console.log(Error)
             })
       },
+		reload(){
+			this.routerstatus=false;
+				this.$nextTick(()=>{
+				this.routerstatus=true;
+			})
+		}
     },
     computed: {
       nav(){
@@ -68,6 +78,9 @@
       // eslint-disable-next-line vue/no-dupe-keys
       login_comp(){
         return this.$store.state.login;
+      },
+      Author_comp(){
+        return this.$store.state.isAuthor;
       },
     },
     mounted() {
@@ -90,9 +103,12 @@
         }
       })
           .then(res=>{
-            this.login = true
-            console.log('初始加载用户信息')
-            console.log(res.data)
+            this.UserName = res.data.username
+            this.login_comp = res.data.isFrozen
+            this.Author_comp = res.data.isAuthor
+            this.$store.commit('getUserName',res.data.username)
+            this.$store.commit('changeinfoLogin', true)
+            this.$router.push({ name: 'Home' })
           })
           .catch(Error=>{
             this.isAuthor = false

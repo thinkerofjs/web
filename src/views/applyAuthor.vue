@@ -82,10 +82,11 @@
     methods: {
       Author(){
         var jsons={
-
+          "headImage": "string",
+          "pseudonym": this.pri
         }
         this.$axios({
-          url:'api/work/author/apply',
+          url:'/api/work/author/apply',
           method:'post',
           data:jsons,
           header:{
