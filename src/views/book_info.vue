@@ -3,21 +3,21 @@
     <Row class="bookInfoLayout" type="flex" justify="center" align="bottom">
         <Col span="10">
           <div class="bookText">
-              <div class="bookTitle"><p>{{resData.novelName}}<span class="bookStatus"><div v-if="resData.isComplete">完结</div><div v-if="!(resData.isComplete)">连载</div></span></p></div>
-            <p class="bookAuthor">{{resData.author.pseudonym}}</p>
-            <p class="bookIntroduction">{{resData.summary}}</p>
+            <div class="bookTitle"><p>{{novelInfo.novelName}}<span class="bookStatus">{{novelInfo.isComplete?status.finish:status.serialized}}</span></p></div>
+            <p class="bookAuthor" v-if="novelInfo.author">{{novelInfo.author.pseudonym}}</p>
+            <p class="bookIntroduction">{{novelInfo.summary}}</p>
             <div class="bookLine">
-<!--              <router-link class="bookMenu" to="/BookCataLogue">-->
+              <router-link class="bookMenu" :to="'/BookCataLogue/'+novelInfo.novelId">
                 <svg class="icon" aria-hidden="true">
                   <use xlink:href="#icon-mulu"></use>
                 </svg>
                 <span>作品目录</span>
-<!--              </router-link>-->
-              <router-link class="bookRead" to="/book-reader/book-reader?chapterId=1">
-                <span>开始阅读</span>
-                <svg class="icon" aria-hidden="true">
-                  <use xlink:href="#icon-fanhui"></use>
-                </svg>
+              </router-link>
+              <router-link v-if="firstChapter" class="bookRead" :to="'/BookReader/'+firstChapter">
+                      <span>开始阅读</span>
+                      <svg class="icon" aria-hidden="true">
+                          <use xlink:href="#icon-fanhui"></use>
+                      </svg>
               </router-link>
             </div>
             <div class="bookOther">
@@ -31,9 +31,7 @@
           </div>
         </Col>
         <Col span="6">
-          <router-link class="bookRead" to="/BookReader">
-            <img class="bookImg" src="@/assets/book.jpg" />
-          </router-link>
+            <img class="bookImg" :src="prefix+novelInfo.cover"/>
         </Col>
         <Col span="8">
             <div class="scorePeople">
@@ -52,7 +50,6 @@
         </Col>
     </Row>
   </div>
-
 </template>
 
 <script>
@@ -60,48 +57,37 @@ import {Row, Col} from 'view-design'
 
 export default {
   name: 'book-info',
-  data () {
-      return {
-          novelId : 0,
-          resData : '',
-      }
-  },
   components: {
       Row,
       Col
   },
-  created(){
-      this.novelId = this.$route.query.novelId;
+  data() {
+      const status = {serialized: "连载", finish: "完结"}
+     return{
+       status:status,
+       // 小说信息
+       novelInfo:{},
+       // 第一章
+         firstChapter: null,
+         // 图片前缀
+         prefix: "/data/"
+    }},
+    created(){
+      this.fetchData();
+    //console.log(this.$store.state.count)
   },
-  mounted(){
-      console.log(this.$store.state.count)
-
-      //在用户看到界面之前执行
-      // var a = document.getElementById("tablebox");
-      // var scroll_width = 100; //滚动一下的距离
-      // if(document.addEventListener){
-      //     document.addEventListener('DOMMouseScroll', mousewheel_event, false); // FF
-      // }
-      // a.onmousewheel = mousewheel_event; // IE/Opera/Chrome
-      // function mousewheel_event(eee) {
-      //     var eee2 = eee || window.event, v;
-      //     eee2.wheelDelta ? v=eee2.wheelDelta : v=eee2.detail;
-      //     if(v>3||-v>3) v=-v;
-      //     v>0 ? a.scrollLeft+=scroll_width : a.scrollLeft-=scroll_width;
-      //
-      //     eee2.preventDefault(); //阻止浏览器的默认滚动
-      // }
-
-      this.$api.get('api/main/pub/novel/'+this.novelId, {
-              novelId: this.novelId
-          }, response =>{
+  methods:{
+      fetchData(){
+          let book_id = this.$route.params.id;
+          this.$api.get('/api/main/pub/novel/'+book_id,{},response => {
               if (response.status >= 200 && response.status < 300) {
-                  console.log(response.data);
-                  this.resData = response.data.resData;
+                  this.novelInfo = response.data.resData;
+                  this.firstChapter = this.novelInfo.catalog[0].chapters[0].chapterId;
               } else {
                   console.log(response.message);
               }
           })
+      }
   }
 }
 </script>

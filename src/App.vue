@@ -15,8 +15,6 @@
     <router-view  v-if="routerstatus"></router-view>
   </div>
 </template>
-
-
 <script>
   import {Row, Col} from 'view-design'
   export default {
@@ -86,7 +84,6 @@
       },
     },
     mounted() {
-
       var jsons= {
         "email": "string",
         "headImage": "string",

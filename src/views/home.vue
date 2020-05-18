@@ -6,8 +6,8 @@
 
     <div id="tablebox">
       <ul class="dashuo-list">
-
-        <li @click="universe_top_function" v-for="book_top in uniBooks_top" v-bind:key="book_top.novelId">
+        <li v-for="book_top in uniBooks_top" v-bind:key="book_top.novelId">
+          <router-link :to="'/book_info/'+book_top.novelId">
           <div class="dashuo-list-img">
             <img :src="`http://180.76.245.160/data/${book_top.cover}`" alt="">
           </div>
@@ -16,6 +16,7 @@
           <br>
           <p></p>
           <a href="#"><span class="icon iconfont f24 tfrte90">&#xe779;</span></a>
+            </router-link>
         </li>
 
       </ul>
@@ -75,8 +76,7 @@ export default {
   },
   data(){
     return {
-      universe:[
-          ],
+      universe:[],
       univ_pai: [],
       novel_pai: [],
       uniBooks:[],
@@ -113,7 +113,7 @@ export default {
         },
         tss: function(){
             console.log(434);
-        }
+        },
     },
     computed: {
       userId(){
@@ -121,7 +121,6 @@ export default {
       }
     },
   mounted() {
-
     //在用户看到界面之前执行
     var a = document.getElementById("tablebox");
     var scroll_width = 100; //滚动一下的距离
